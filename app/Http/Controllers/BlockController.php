@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Block;
 use App\Blockchain;
 
+use App\Services\BlockchainService;
+use App\Services\BlockService;
+
 use Illuminate\Http\Request;
 
 class BlockController extends Controller
@@ -30,11 +33,11 @@ class BlockController extends Controller
     public function create(Blockchain $blockchain)
     {
 
-        $latestBlock = $blockchain->blocks()->orderBy('created_at','desc')->get();
+        //$latestBlock = $blockchain->blocks()->orderBy('created_at','desc')->get();
 
-        if (!isset($latestBlock[1])) {
-            return view('blockchain.create')->withError('Não tem o primeiro');
-        }
+        // if (!isset($latestBlock[1])) {
+        //     return view('blockchain.create')->withError('Não tem o primeiro');
+        // }
 
         return view('block.create');
     }
@@ -45,9 +48,21 @@ class BlockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Blockchain $blockchain, Request $request)
     {
-        //
+
+        $request->validate([
+            'data' => 'required|json',
+        ]);
+
+        $args = [
+            'blockchain_id' => $blockchain->id,
+            'data'          => $request->data,
+        ];
+
+        $blockchain->newBlock($args);
+
+        dd($request);
     }
 
     /**

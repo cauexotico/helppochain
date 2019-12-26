@@ -17,4 +17,7 @@ Route::get('/', function () {
 
 Route::resource('blockchains','BlockchainController');
 
-Route::get('blockchains/{blockchain}/create','BlockController@create');
+Route::get('blockchains/{blockchain}/create','BlockController@create')
+	->name('block.create');
+Route::post('blockchains/{blockchain}/create','BlockController@store')
+	->name('block.store');

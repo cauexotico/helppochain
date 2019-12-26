@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Services\BlockService;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model

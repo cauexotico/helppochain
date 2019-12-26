@@ -46,8 +46,9 @@ class BlockchainController extends Controller
             'type' => 'required',
         ]);
   
-        Blockchain::create($request->all());
-   
+        $blockchain = Blockchain::create($request->all());
+        $blockchain->createGenesisBlock();
+
         return redirect()->route('blockchains.index')
                         ->with('success','Blockchain created successfully.');
     }
