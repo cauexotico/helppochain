@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('blockchains','BlockchainController');
+
+Route::get('blockchains/{blockchain}/create','BlockController@create');
