@@ -14,13 +14,9 @@ class BlockchainController extends Controller
      */
     public function index()
     {
+        $blockchains = Blockchain::all();
 
-        $blockchains = Blockchain::latest()->paginate(12);
-
-        dd($blockchains);
-
-        return view('blockchain.index',compact('blockchains'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('blockchain.index',compact('blockchains'));
     }
 
     /**
@@ -30,7 +26,7 @@ class BlockchainController extends Controller
      */
     public function create()
     {
-        return view('blockchain.create');
+        //
     }
 
     /**
@@ -41,16 +37,7 @@ class BlockchainController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'difficulty' => 'required|numeric|min:1|max:8',
-            'type' => 'required',
-        ]);
-  
-        $blockchain = Blockchain::create($request->all());
-        $blockchain->createGenesisBlock();
-
-        return redirect()->route('blockchains.index')
-                        ->with('success','Blockchain created successfully.');
+        //
     }
 
     /**
@@ -61,7 +48,7 @@ class BlockchainController extends Controller
      */
     public function show(Blockchain $blockchain)
     {
-        dd($blockchain);
+        return view('blockchain.show',compact('blockchain'));
     }
 
     /**

@@ -15,15 +15,17 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('blockchain_id');
             $table->char('name', 100);
             $table->enum('type', ['solo', 'shared']);
-            $table->json('whitelist');
+            $table->string('api_key', 64);
+            $table->string('api_secret', 64);
+            $table->string('start_version', 20);
+            $table->string('current_version', 20);
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('blockchain_id')->references('id')->on('blockchains');
+            $table->foreign('blockchain_id')->references('id')->on('blockchains')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

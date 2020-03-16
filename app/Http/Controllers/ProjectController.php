@@ -1,27 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Block;
-use App\Blockchain;
-
-use App\Services\BlockchainService;
-use App\Services\BlockService;
+use App\Project;
+use App\Services\ProjectService;
 
 use Illuminate\Http\Request;
 
-class BlockController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Blockchain $blockchain)
+    public function index()
     {
-        $blocks = $blockchain->blocks;
 
-        return view('block.index', compact('blocks'));
+        $projects = Project::all();
+
+        return view('projects.index', compact('projects'));
     }
 
     /**
@@ -29,9 +26,9 @@ class BlockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Blockchain $blockchain)
+    public function create()
     {
-        //
+        return view('projects.create');
     }
 
     /**
@@ -40,22 +37,29 @@ class BlockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Blockchain $blockchain, Request $request)
+    public function store(Request $request)
     {
-
         $request->validate([
-            'data' => 'required|json',
+            'name' => 'required',
+            'type' => 'required',
+            'difficulty' => 'required|numeric|min:1|max:8',
         ]);
 
-        $args = [
-            'blockchain_id' => $blockchain->id,
-            'data'          => $request->data,
+        $project = [
+            'blockchain_id' => ProjectService::findOrCreateBlockchain($request->type, $request->difficulty),
+            'name'            => $request->name,
+            'type'            => $request->type,
+            'api_key'         => 'abc123',
+            'api_secret'      => 'abc123',
+            'start_version'   => 1,
+            'current_version' => 1,   
         ];
 
-        $createBlock = $blockchain->newBlock($args);
+        Project::create($project);
+   
+        return redirect()->route('projects.index')
+                         ->with('success','Product created successfully.');
 
-        dump($createBlock);
-        dd($request);
     }
 
     /**
@@ -64,9 +68,9 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function show(Block $block)
+    public function show(Project $project)
     {
-        return view('block.show', compact('block'));
+        return view('projects.show', compact('project'));
     }
 
     /**
@@ -75,7 +79,7 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function edit(Block $block)
+    public function edit(Project $project)
     {
         //
     }
@@ -87,7 +91,7 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Block $block)
+    public function update(Request $request, Project $project)
     {
         //
     }
@@ -98,7 +102,7 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Block $block)
+    public function destroy(Blockchain $blockchain)
     {
         //
     }

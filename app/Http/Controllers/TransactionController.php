@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Block;
-use App\Blockchain;
-
-use App\Services\BlockchainService;
-use App\Services\BlockService;
+use App\Transaction;
 
 use Illuminate\Http\Request;
 
-class BlockController extends Controller
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Blockchain $blockchain)
+    public function index()
     {
-        $blocks = $blockchain->blocks;
-
-        return view('block.index', compact('blocks'));
+        $transactions = Transaction::all();
+        return view('transactions.index', compact('transactions'));
     }
 
     /**
@@ -29,9 +24,9 @@ class BlockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Blockchain $blockchain)
+    public function create()
     {
-        //
+        return view('transactions.create');
     }
 
     /**
@@ -40,22 +35,11 @@ class BlockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Blockchain $blockchain, Request $request)
+    public function store(Request $request)
     {
+        return redirect()->route('transactions.index')
+                         ->with('success','Product created successfully.');
 
-        $request->validate([
-            'data' => 'required|json',
-        ]);
-
-        $args = [
-            'blockchain_id' => $blockchain->id,
-            'data'          => $request->data,
-        ];
-
-        $createBlock = $blockchain->newBlock($args);
-
-        dump($createBlock);
-        dd($request);
     }
 
     /**
@@ -64,9 +48,9 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function show(Block $block)
+    public function show(Transaction $transaction)
     {
-        return view('block.show', compact('block'));
+        return view('projects.show');
     }
 
     /**
@@ -75,7 +59,7 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function edit(Block $block)
+    public function edit(Transaction $transaction)
     {
         //
     }
@@ -87,7 +71,7 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Block $block)
+    public function update(Request $request, Transaction $transaction)
     {
         //
     }
@@ -98,7 +82,7 @@ class BlockController extends Controller
      * @param  \App\Blockchain  $blockchain
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Block $block)
+    public function destroy(Transaction $transaction)
     {
         //
     }

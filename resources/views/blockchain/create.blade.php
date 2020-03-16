@@ -17,6 +17,7 @@
 
         <form method="POST" action="{{ route('blockchains.store') }}">
             @csrf
+            <input type="text" name="version" value="1.0.0" required placeholder="Version (1.0.0)">
             <input type="number" min="1" max="8" name="difficulty" placeholder="Difficulty">
             <select name="type">
                 <option value="solo">Solo</option>
