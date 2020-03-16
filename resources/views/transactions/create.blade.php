@@ -8,7 +8,7 @@
 		@endforeach
 	@endif
 	
-	<form method="POST" action="{{ route('TransactionController@store') }}">
+	<form method="POST" action="{{ action('TransactionController@store', $blockchain->id) }}">
 		@csrf
 
 		<input type="text" name="data" id="data" placeholder='Json ["data"]'>

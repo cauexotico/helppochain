@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('users','UserController');
+//Route::resource('users','UserController');
 
 Route::resource('projects','ProjectController');
 Route::resource('blockchains','BlockchainController');
