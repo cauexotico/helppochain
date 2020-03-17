@@ -16,7 +16,7 @@
 		@foreach($projects as $project)
 			<tr>
 				<td>{{ $project->id }}</td>
-				<td>{{ $project->blockchain_id }}</td>
+				<td><a href="{{ route('blockchains.show',$project->blockchain_id) }}">{{ $project->blockchain_id }}</a></td>
 				<td>{{ $project->name }}</td>
 				<td>{{ $project->type }}</td>
 				<td>{{ $project->api_key }}</td>

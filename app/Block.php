@@ -14,16 +14,16 @@ class Block extends Model
         'blockchain_id', 'nonce', 'data', 'previous_hash', 'hash'
     ];
 
-    public function addTransaction($args) 
-    {
-        $transaction = new Transaction;
-        $transaction->block_id      = $args['block_id'];
-        $transaction->hash          = $args['hash'];
-        $transaction->data          = $args['data'];
-        $transaction->save();
+    // public function addTransaction($args) 
+    // {
+    //     $transaction = new Transaction;
+    //     $transaction->block_id      = $args['block_id'];
+    //     $transaction->hash          = $args['hash'];
+    //     $transaction->data          = $args['data'];
+    //     $transaction->save();
 
-        return $transaction;
-    }
+    //     return $transaction;
+    // }
 
     /**
      * Get the blockchain of this block.

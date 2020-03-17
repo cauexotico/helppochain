@@ -10,6 +10,10 @@ class Transaction extends Model
         'block_id', 'hash', 'data'
     ];
 
+    protected $casts = [
+        'data' => 'json',
+    ];
+
     public function block()
     {
         return $this->belongsTo('App\Block');

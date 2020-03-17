@@ -14,5 +14,8 @@ class HashService
         
     }
 
+    public function cryptData() {
+    	
+    }
 
 }

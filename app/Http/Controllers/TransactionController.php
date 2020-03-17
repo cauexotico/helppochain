@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Transaction;
+use App\Blockchain;
 
 use Illuminate\Http\Request;
 
@@ -24,9 +25,9 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Blockchain $blockchain)
     {
-        return view('transactions.create');
+        return view('transactions.create', compact('blockchain'));
     }
 
     /**
@@ -35,11 +36,16 @@ class TransactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Blockchain $blockchain, Request $request)
     {
+        $request->validate([
+            'data' => 'required|json',
+        ]);
+
+        $blockchain->createTransaction($request->data);
+
         return redirect()->route('transactions.index')
                          ->with('success','Product created successfully.');
-
     }
 
     /**

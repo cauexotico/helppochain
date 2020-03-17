@@ -30,7 +30,7 @@ class Blockchain extends Model
             'hash' => 0,
             'data' => '["Genesis Block"]',
         ];
-        $transaction = $block->addTransaction($transaction);
+        $transaction = $this->storeTransaction($transaction);
 
         return true;
     }
@@ -49,6 +49,17 @@ class Blockchain extends Model
         return $block;
     }
 
+    public function storeTransaction($args)
+    {
+        $transaction = new Transaction;
+        $transaction->block_id        = $args['block_id'];
+        $transaction->hash            = $args['hash'];
+        $transaction->data            = $args['data'];
+        $transaction->save();
+
+        return $transaction;
+    }
+
     public function createTransaction($data)
     {
         $transaction = [
@@ -56,6 +67,12 @@ class Blockchain extends Model
             'hash'     => 0,
             'data'     => $data,
         ];
+
+        $transaction = $this->storeTransaction($transaction);
+
+        dd($transaction);
+
+        return $transaction;
     }
 
     public function findOrCreateNotMinedBlock()
@@ -75,6 +92,7 @@ class Blockchain extends Model
             'blockchain_id' => $this->id,
             'nonce'         => 0,
             'height'        => 0,
+            'hash'          => 0,
             'previous_hash' => 0,
             'status'        => 'not_mined',
         ];
